@@ -1,4 +1,4 @@
-# Deapth first search maze, A* path finding.
+# Depth first search maze, A* path finding.
 This project was made mainly for me to learn the A* path finding algorithm.
 
 # Building
