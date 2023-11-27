@@ -9,4 +9,4 @@ raylib
 ```
 on a linux system simply run the ./build.sh script to build the executable.
 # Demo
-./demo.mkv
+https://github.com/xelox/A_star/blob/main/demo.mkv
