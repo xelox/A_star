@@ -1,2 +1,15 @@
 #! /usr/bin/bash
-g++ ./src/maze.cpp ./src/main.cpp -o main -L /usr/lib/libraylib.so -lraylib
+
+if [ -d "src" ]; then
+    source_files=$(find src -type f -name "*.cpp")
+    if [ -n "$source_files" ]; then
+        g++ $source_files \
+            -o main \
+            -L /usr/lib/libraylib.so \
+            -lraylib
+    else 
+        echo "No .cpp files in src dir."
+    fi
+else
+    echo "No src dir!?"
+fi

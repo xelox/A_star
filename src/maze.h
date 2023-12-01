@@ -117,23 +117,24 @@ private:
     std::mt19937 rng;
 
 public:
-    Maze(unsigned int size, unsigned int clientWidth, unsigned int clientHeight);
-
+    Maze(unsigned int cellSize, unsigned int clientWidth, unsigned int clientHeight);
     ~Maze();
 
-    void resetMaze();
 
-    void draw();
 
-    void generationStep();
-
-    void solvingStep();
-
-    void tracingStep();
-
-    bool isReady() const;
-    bool isSolved() const;
-    bool isTraced() const;
+    //end-user methods. ----//
+                            // 
+    void resetMaze();       //
+    void draw();            //
+    void generationStep();  //
+    void solvingStep();     //
+    void tracingStep();     //
+                            //
+    bool isReady() const;   //
+    bool isSolved() const;  //
+    bool isTraced() const;  //
+                            //
+    //----------------------//
 
 private:
     SolutionUnit *popNextBestSolutionStep();

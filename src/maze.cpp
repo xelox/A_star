@@ -6,9 +6,11 @@ Maze::Point::Point(int x, int y) {
     this->x = x;
     this->y = y;
 }
+
 Maze::Point Maze::Point::operator + (const Point& rhs) const {
     return Point(this->x + rhs.x, this->y + rhs.y);
 }
+
 Maze::Point Maze::Point::operator * (const int &rhs) const {
     return Point(this->x * rhs, this->y * rhs);
 }
@@ -101,9 +103,8 @@ bool Maze::SolutionUnit::operator<(const SolutionUnit &rhs) const {
 
 // Maze methods
 
-Maze::Maze(unsigned int size, unsigned int clientWidth,
-           unsigned int clientHeight) {
-    this->cellSize = size;
+Maze::Maze(unsigned int cellSize, unsigned int clientWidth, unsigned int clientHeight) {
+    this->cellSize = cellSize;
     this->mazeWidth = (clientWidth - this->mazeMargin * 2) / this->cellSize;
     this->mazeHeight = (clientHeight - this->mazeMargin * 2) / this->cellSize;
 
