@@ -1,7 +1,4 @@
 #include "./maze.h"
-#include <cmath>
-#include <iostream>
-#include <raylib.h>
 
 //Maze::Point methods
 

@@ -1,4 +1,4 @@
-#include <array> 
+#include <array>
 #include <raylib.h>
 #include <stack>
 #include <vector>
