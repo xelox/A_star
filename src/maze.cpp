@@ -1,4 +1,7 @@
 #include "./maze.h"
+#include <cmath>
+#include <iostream>
+#include <raylib.h>
 
 //Maze::Point methods
 
@@ -103,7 +106,9 @@ bool Maze::SolutionUnit::operator<(const SolutionUnit &rhs) const {
 
 // Maze methods
 
-Maze::Maze(unsigned int cellSize, unsigned int clientWidth, unsigned int clientHeight) {
+Maze::Maze(unsigned int cellSize, unsigned int clientWidth, unsigned int clientHeight){
+    this->rt = LoadRenderTexture(clientWidth, clientHeight);
+
     this->cellSize = cellSize;
     this->mazeWidth = (clientWidth - this->mazeMargin * 2) / this->cellSize;
     this->mazeHeight = (clientHeight - this->mazeMargin * 2) / this->cellSize;
@@ -119,8 +124,10 @@ Maze::Maze(unsigned int cellSize, unsigned int clientWidth, unsigned int clientH
 Maze::~Maze() {
     delete this->mazeGrid;
     this->mazeGrid = nullptr;
-    for (auto &unitptr : this->closedSet)
-    delete unitptr;
+
+    for (auto &unitptr : this->closedSet) delete unitptr;
+
+    UnloadRenderTexture(this->rt);
 }
 
 void Maze::resetMaze() {
@@ -168,15 +175,16 @@ void Maze::draw() {
             auto drawPos = Point(x * this->cellSize + this->mazeMargin,
                                  y * this->cellSize + this->mazeMargin);
 
-            DrawRectangle(drawPos.x, drawPos.y, this->cellSize, this->cellSize,
-                          cell.color());
-            for (const auto &wall : cell.wallLines()) {
-                auto p1 = (drawPos + wall.first * this->cellSize).vec2();
-                auto p2 = (drawPos + wall.second * this->cellSize).vec2();
-                DrawLineV(p1, p2, BLACK);
-            }
+            DrawRectangle(drawPos.x, drawPos.y, this->cellSize, this->cellSize, cell.color());
         }
     }
+
+    if(this->ready) {
+        DrawTextureRec(this->rt.texture,
+                       {0, 0, (float)this->rt.texture.width, -(float)this->rt.texture.height}, 
+                       {0, 0}, WHITE);
+    }
+    else this->drawMazeWalls();
 
     if (this->mazeGenStack.empty()) return;
 
@@ -189,6 +197,7 @@ void Maze::draw() {
 void Maze::generationStep() {
     if (this->mazeGenStack.size() == 0) {
         this->ready = true;
+        this->generateMazeTexture();
         return;
     }
 
@@ -365,3 +374,26 @@ Maze::SolutionUnit *Maze::findOpenNode(const Point &pos) {
     return nullptr;
 }
 
+void Maze::generateMazeTexture() const {
+    BeginTextureMode(this->rt);
+    ClearBackground(Color({255, 255, 255, 0}));
+    this->drawMazeWalls();
+    EndTextureMode();
+}
+
+void Maze::drawMazeWalls() const {
+    for (unsigned int x = 0; x < this->mazeWidth; x++) {
+        for (unsigned int y = 0; y < this->mazeHeight; y++) {
+            auto idx = x + y * this->mazeWidth;
+            const auto &cell = this->mazeGrid[idx];
+            auto drawPos = Point(x * this->cellSize + this->mazeMargin,
+                                 y * this->cellSize + this->mazeMargin);
+
+            for (const auto &wall : cell.wallLines()) {
+                auto p1 = (drawPos + wall.first * this->cellSize).vec2();
+                auto p2 = (drawPos + wall.second * this->cellSize).vec2();
+                DrawLineV(p1, p2, BLACK);
+            }
+        }
+    }
+}

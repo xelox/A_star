@@ -1,4 +1,4 @@
-#include <array>
+#include <array> 
 #include <raylib.h>
 #include <stack>
 #include <vector>
@@ -35,7 +35,7 @@ private:
         WHITE,                  //1 gen_ready
         {252, 248, 171, 255},   //2 solve_open 
         {252, 108, 106, 255},   //3 solve_close
-        {30, 30, 30, 255},      //4 solution
+        {190, 242, 164, 255},      //4 solution
     };
 
     enum Direction {
@@ -93,8 +93,9 @@ private:
 
     //maze cells
     MazeCell* mazeGrid = nullptr;
+    RenderTexture2D rt;
 
-    //maze generation data
+    // maze generation
     std::stack<MazeCell*> mazeGenStack;
 
     // maze solving data
@@ -138,6 +139,8 @@ public:
 
 private:
     SolutionUnit *popNextBestSolutionStep();
-
     SolutionUnit *findOpenNode(const Point &pos);
+
+    void generateMazeTexture() const;
+    void drawMazeWalls() const;
 };

@@ -6,7 +6,8 @@ if [ -d "src" ]; then
         g++ $source_files \
             -o main \
             -L /usr/lib/libraylib.so \
-            -lraylib
+            -lraylib \
+            -g
     else 
         echo "No .cpp files in src dir."
     fi

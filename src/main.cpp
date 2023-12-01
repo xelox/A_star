@@ -6,14 +6,15 @@
 int main(int argc, char** argv) {
     const unsigned int clientWidth = 1200;
     const unsigned int clientHeight = 900;
-
-    Maze maze(20, clientWidth, clientHeight);
-    while (!maze.isReady()) maze.generationStep();
-
+    
     InitWindow(clientWidth, clientHeight, "raylibWin");
     SetTargetFPS(165);
     SetTraceLogLevel(TraceLogLevel::LOG_ERROR);
     SetWindowState(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_UNFOCUSED);
+
+    Maze maze(15, clientWidth, clientHeight);
+    while (!maze.isReady()) maze.generationStep();
+
     bool running = false;
 
     while( !WindowShouldClose() ) {
@@ -37,7 +38,7 @@ int main(int argc, char** argv) {
             if (!maze.isReady()) maze.generationStep();
             else if (!maze.isSolved()) maze.solvingStep();
             else if (!maze.isTraced()) maze.tracingStep();
-            else maze.resetMaze();
+            // else maze.resetMaze();
         }
       
         EndDrawing();
